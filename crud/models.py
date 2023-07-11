@@ -21,3 +21,17 @@ class Product(models.Model):
     def __str__(self):
         return self.name
     
+class Reporter(models.Model):
+    firstName = models.CharField(max_length=255)
+    lastName = models.CharField(max_length=255)
+
+    def __str__(self):
+        return self.firstName
+    
+
+class Article(models.Model):
+    headLine = models.TextField(max_length=255)
+    reporter = models.ForeignKey(Reporter, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.headLine

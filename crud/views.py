@@ -17,11 +17,12 @@ def product_list(req):
 
         if ser.is_valid():
             ser.save()
-        for cat in req.data["category"]:
-            Product.objects.get(id=ser.data["id"]).category.add(cat["id"])
+        # for cat in req.data["category"]:
+        #     Product.objects.get(id=ser.data["id"]).category.add(cat["id"])
+
 
         return Response(ser.data)
-    
+        
 @api_view(["GET", "PUT", "DELETE"])
 def product_detail(req, id):
     try:
@@ -38,12 +39,25 @@ def product_detail(req, id):
 
         if ser.is_valid():
             ser.save()
-        product.category.clear()
-        for cat in req.data["category"]:
-            product.category.add(cat["id"])
+
         
         return Response(ser.data)
 
     elif req.method == "DELETE":
         product.delete()
         return Response('This item has deleted')
+    
+
+@api_view(["GET", "POST"])
+def article_list(req):
+    if req.method == "GET":
+        articles = Article.objects.all()
+        ser = ArticleS(articles, many=True)
+
+        return Response(ser.data)
+    elif req.method == "POST":
+        ser = ArticleS(data=req.data)
+
+        if ser.is_valid():
+            ser.save()
+        return Response(ser.data)
